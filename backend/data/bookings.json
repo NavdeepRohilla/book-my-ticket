@@ -1,0 +1,38 @@
+[
+  {
+    "id": "bae29972-c787-4f2e-bc75-642d9d900efb",
+    "movieId": "movie-1",
+    "movieTitle": "Dhurandhar The Revenge",
+    "seatNumber": 4,
+    "userId": "2a4b42b9-6883-4cf6-ba85-a7712328b9a7",
+    "userName": "Navdeep",
+    "createdAt": "2026-04-14T15:06:35.772Z"
+  },
+  {
+    "id": "53d6e76a-a15a-4a5e-b515-60101b6d0ecc",
+    "movieId": "movie-1",
+    "movieTitle": "Dhurandhar The Revenge",
+    "seatNumber": 3,
+    "userId": "2a4b42b9-6883-4cf6-ba85-a7712328b9a7",
+    "userName": "Navdeep",
+    "createdAt": "2026-04-14T15:06:37.078Z"
+  },
+  {
+    "id": "4b87e87e-6289-4978-8b82-f3425cd42226",
+    "movieId": "movie-1",
+    "movieTitle": "Dhurandhar The Revenge",
+    "seatNumber": 2,
+    "userId": "ba1405d6-3e21-43a9-ad11-6c5a0508e481",
+    "userName": "abhishek",
+    "createdAt": "2026-04-14T15:07:24.054Z"
+  },
+  {
+    "id": "756f144a-b316-47f4-a03c-6f6ae8c9ae50",
+    "movieId": "movie-1",
+    "movieTitle": "Dhurandhar The Revenge",
+    "seatNumber": 8,
+    "userId": "ba1405d6-3e21-43a9-ad11-6c5a0508e481",
+    "userName": "abhishek",
+    "createdAt": "2026-04-14T15:07:24.872Z"
+  }
+]

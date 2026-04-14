@@ -3,139 +3,633 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stellar Seat Booking</title>
+    <title>Book My Ticket</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap");
+
+      :root {
+        --bg-1: #08111f;
+        --bg-2: #12233f;
+        --panel: rgba(10, 20, 38, 0.78);
+        --border: rgba(113, 160, 255, 0.18);
+        --text-soft: #95a7c7;
+        --brand: #5eead4;
+        --brand-2: #38bdf8;
+        --warn: #fda4af;
+        --ok: #34d399;
+      }
+
       body {
         font-family: "Outfit", sans-serif;
-        background-color: #0f172a;
-        color: #f8fafc;
+        background:
+          radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 28%),
+          radial-gradient(circle at top right, rgba(94, 234, 212, 0.12), transparent 26%),
+          linear-gradient(135deg, var(--bg-1), var(--bg-2));
+        color: #e5eefc;
+      }
+
+      .glass {
+        background: var(--panel);
+        backdrop-filter: blur(24px);
+        border: 1px solid var(--border);
+        box-shadow: 0 18px 60px rgba(3, 10, 22, 0.35);
+      }
+
+      .seat {
+        transform: translateY(0);
+        transition:
+          transform 180ms ease,
+          box-shadow 180ms ease,
+          border-color 180ms ease,
+          background-color 180ms ease;
+      }
+
+      .seat:hover {
+        transform: translateY(-4px);
+      }
+
+      .seat.available {
+        background: linear-gradient(145deg, rgba(16, 185, 129, 0.9), rgba(5, 150, 105, 0.95));
+        border-color: rgba(167, 243, 208, 0.9);
+        box-shadow: 0 10px 28px rgba(16, 185, 129, 0.28);
+      }
+
+      .seat.booked {
+        background: rgba(244, 63, 94, 0.08);
+        border-color: rgba(251, 113, 133, 0.35);
+        color: rgba(255, 228, 230, 0.7);
+      }
+
+      .seat.mine {
+        background: linear-gradient(145deg, rgba(56, 189, 248, 0.9), rgba(14, 116, 144, 0.98));
+        border-color: rgba(186, 230, 253, 0.95);
+        box-shadow: 0 10px 28px rgba(56, 189, 248, 0.24);
+      }
+
+      .screen-glow {
+        background: linear-gradient(180deg, rgba(224, 242, 254, 0.95), rgba(186, 230, 253, 0.2));
+        box-shadow:
+          0 0 40px rgba(125, 211, 252, 0.22),
+          0 18px 35px rgba(14, 165, 233, 0.18);
       }
     </style>
   </head>
-  <body
-    class="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
-  >
-    <div
-      class="max-w-7xl w-full bg-slate-800/80 backdrop-blur-xl rounded-3xl shadow-2xl p-10 border border-slate-700/50"
-    >
-      <div class="text-center mb-10">
-        <h1
-          class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 mb-4 tracking-tight"
-        >
-          ChaiCode Cinema - Now Showing<br />
-          <br />
-          <span class="text-red-400">
-            <span class="font-bold">Dhurandhar The Revenge</span>
-          </span>
-        </h1>
-        <p class="text-slate-400 text-lg">Jassi ko ghar ki yaad kyu nhi aai?</p>
-      </div>
-
-      <div class="flex justify-center mb-10">
-        <div
-          class="bg-slate-900/50 rounded-full px-6 py-3 border border-slate-700 flex gap-8 items-center"
-        >
-          <div class="flex items-center gap-3">
-            <div
-              class="w-4 h-4 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.6)]"
-            ></div>
-            <span class="text-slate-300 font-medium tracking-wide"
-              >Available</span
-            >
+  <body class="min-h-screen px-4 py-8 md:px-8">
+    <div class="mx-auto flex w-full max-w-7xl flex-col gap-6">
+      <header class="glass overflow-hidden rounded-[32px] p-6 md:p-8">
+        <div class="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
+          <div class="max-w-2xl">
+            <p class="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-cyan-300/80">
+              Simplified Book My Ticket
+            </p>
+            <h1 class="text-4xl font-extrabold leading-tight text-white md:text-5xl">
+              Book seats with login-protected access and live booking status.
+            </h1>
+            <p class="mt-4 max-w-xl text-base leading-7 text-slate-300">
+              Frontend is now connected with the backend auth and booking APIs. Register,
+              login, pick a movie, and reserve seats directly from this page.
+            </p>
           </div>
-          <div class="w-px h-6 bg-slate-700"></div>
-          <div class="flex items-center gap-3">
-            <div
-              class="w-4 h-4 rounded-full bg-rose-500/20 border border-rose-500/50"
-            ></div>
-            <span class="text-slate-400 font-medium tracking-wide">Booked</span>
+
+          <div class="glass min-w-full rounded-[28px] p-5 lg:min-w-[360px] lg:max-w-[380px]">
+            <div class="mb-4 flex items-center justify-between">
+              <div>
+                <p class="text-sm text-slate-400">Backend API</p>
+                <p class="text-sm font-semibold text-white" id="apiBaseLabel"></p>
+              </div>
+              <button
+                id="logoutBtn"
+                class="hidden rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10"
+              >
+                Logout
+              </button>
+            </div>
+
+            <div id="authState" class="mb-4 rounded-2xl border border-white/10 bg-slate-950/30 p-4">
+              <p class="text-sm text-slate-400">Session</p>
+              <p id="sessionText" class="mt-1 text-sm font-medium text-white">
+                Not logged in
+              </p>
+            </div>
+
+            <div class="mb-4 grid grid-cols-2 gap-2 rounded-2xl bg-slate-950/40 p-1">
+              <button
+                id="tabLogin"
+                class="rounded-2xl bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950"
+              >
+                Login
+              </button>
+              <button
+                id="tabRegister"
+                class="rounded-2xl px-4 py-2 text-sm font-semibold text-slate-300"
+              >
+                Register
+              </button>
+            </div>
+
+            <form id="authForm" class="space-y-3">
+              <input
+                id="nameInput"
+                type="text"
+                placeholder="Full name"
+                class="hidden w-full rounded-2xl border border-white/10 bg-slate-950/40 px-4 py-3 text-white outline-none placeholder:text-slate-500 focus:border-cyan-300"
+              />
+              <input
+                id="emailInput"
+                type="email"
+                placeholder="Email address"
+                class="w-full rounded-2xl border border-white/10 bg-slate-950/40 px-4 py-3 text-white outline-none placeholder:text-slate-500 focus:border-cyan-300"
+                required
+              />
+              <input
+                id="passwordInput"
+                type="password"
+                placeholder="Password"
+                class="w-full rounded-2xl border border-white/10 bg-slate-950/40 px-4 py-3 text-white outline-none placeholder:text-slate-500 focus:border-cyan-300"
+                required
+              />
+              <button
+                type="submit"
+                id="authSubmitBtn"
+                class="w-full rounded-2xl bg-gradient-to-r from-cyan-300 to-teal-300 px-4 py-3 text-sm font-bold text-slate-950 transition hover:brightness-105"
+              >
+                Login
+              </button>
+            </form>
           </div>
         </div>
-      </div>
+      </header>
 
-      <div class="flex justify-center">
-        <div
-          class="bg-slate-900/40 p-8 rounded-2xl border border-slate-700/50 shadow-inner"
-        >
-          <table
-            id="tbl"
-            class="border-separate border-spacing-4 mx-auto"
-          ></table>
+      <section class="grid gap-6 lg:grid-cols-[1.3fr_0.7fr]">
+        <div class="glass rounded-[32px] p-6 md:p-8">
+          <div class="mb-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p class="text-sm uppercase tracking-[0.25em] text-slate-400">Now Showing</p>
+              <h2 id="movieTitle" class="mt-2 text-3xl font-bold text-white">
+                Loading movies...
+              </h2>
+              <p id="movieMeta" class="mt-2 text-sm text-slate-400"></p>
+            </div>
+
+            <label class="block">
+              <span class="mb-2 block text-sm font-medium text-slate-300">Select Movie</span>
+              <select
+                id="movieSelect"
+                class="w-full rounded-2xl border border-white/10 bg-slate-950/50 px-4 py-3 text-white outline-none focus:border-cyan-300"
+              ></select>
+            </label>
+          </div>
+
+          <div class="mb-8 flex flex-wrap items-center justify-center gap-5 rounded-full border border-white/10 bg-slate-950/35 px-6 py-4 text-sm">
+            <div class="flex items-center gap-3 text-slate-200">
+              <span class="h-4 w-4 rounded-full bg-emerald-400 shadow-[0_0_14px_rgba(16,185,129,0.6)]"></span>
+              Available
+            </div>
+            <div class="flex items-center gap-3 text-slate-200">
+              <span class="h-4 w-4 rounded-full border border-rose-400/50 bg-rose-500/10"></span>
+              Booked
+            </div>
+            <div class="flex items-center gap-3 text-slate-200">
+              <span class="h-4 w-4 rounded-full bg-sky-400 shadow-[0_0_14px_rgba(56,189,248,0.5)]"></span>
+              Your booking
+            </div>
+          </div>
+
+          <div class="mb-8 flex justify-center">
+            <div class="w-full max-w-xl rounded-[30px] border border-cyan-100/10 bg-slate-950/20 p-5">
+              <div class="screen-glow mx-auto h-5 w-3/4 rounded-[100px]"></div>
+              <p class="mt-3 text-center text-xs font-semibold uppercase tracking-[0.35em] text-cyan-100/70">
+                Screen This Side
+              </p>
+            </div>
+          </div>
+
+          <div
+            id="seatGrid"
+            class="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5"
+          ></div>
         </div>
-      </div>
+
+        <aside class="flex flex-col gap-6">
+          <div class="glass rounded-[32px] p-6">
+            <h3 class="text-xl font-bold text-white">Booking Status</h3>
+            <div id="messageBox" class="mt-4 rounded-2xl border border-white/10 bg-slate-950/30 p-4 text-sm text-slate-300">
+              Start by logging in or creating a new account.
+            </div>
+            <div class="mt-5 grid grid-cols-2 gap-3">
+              <div class="rounded-2xl border border-white/10 bg-slate-950/25 p-4">
+                <p class="text-xs uppercase tracking-[0.25em] text-slate-500">Available</p>
+                <p id="availableCount" class="mt-2 text-3xl font-bold text-emerald-300">0</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-slate-950/25 p-4">
+                <p class="text-xs uppercase tracking-[0.25em] text-slate-500">Booked</p>
+                <p id="bookedCount" class="mt-2 text-3xl font-bold text-rose-300">0</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass rounded-[32px] p-6">
+            <div class="flex items-center justify-between">
+              <h3 class="text-xl font-bold text-white">My Bookings</h3>
+              <button
+                id="refreshBookingsBtn"
+                class="rounded-full border border-white/10 px-4 py-2 text-sm text-slate-200 transition hover:bg-white/5"
+              >
+                Refresh
+              </button>
+            </div>
+            <div id="myBookings" class="mt-4 space-y-3">
+              <p class="rounded-2xl border border-dashed border-white/10 p-4 text-sm text-slate-500">
+                No bookings yet.
+              </p>
+            </div>
+          </div>
+        </aside>
+      </section>
     </div>
 
     <script>
-      async function run() {
-        const tbl = document.getElementById("tbl");
-        const res = await fetch("/seats");
-        const resarray = await res.json();
-        const j = resarray.sort((a, b) => a.id - b.id);
-        let tr;
-        for (let i = 0; i < j.length; i++) {
-          if (i % 8 === 0) tr = document.createElement("tr");
+      const API_BASE_URL =
+        window.location.port === "8080"
+          ? window.location.origin
+          : "http://127.0.0.1:8080";
 
-          const td = document.createElement("td");
+      const state = {
+        mode: "login",
+        token: localStorage.getItem("bookMyTicketToken") || "",
+        user: JSON.parse(localStorage.getItem("bookMyTicketUser") || "null"),
+        movies: [],
+        selectedMovieId: "",
+        seats: [],
+        myBookings: [],
+      };
 
-          // Base aesthetic classes - added 'relative group' for tooltip positioning
-          const baseClasses =
-            "w-32 h-32 rounded-2xl text-center align-middle text-2xl font-bold transition-all duration-300 select-none relative group";
+      const apiBaseLabel = document.getElementById("apiBaseLabel");
+      const authForm = document.getElementById("authForm");
+      const nameInput = document.getElementById("nameInput");
+      const emailInput = document.getElementById("emailInput");
+      const passwordInput = document.getElementById("passwordInput");
+      const authSubmitBtn = document.getElementById("authSubmitBtn");
+      const tabLogin = document.getElementById("tabLogin");
+      const tabRegister = document.getElementById("tabRegister");
+      const movieSelect = document.getElementById("movieSelect");
+      const movieTitle = document.getElementById("movieTitle");
+      const movieMeta = document.getElementById("movieMeta");
+      const seatGrid = document.getElementById("seatGrid");
+      const messageBox = document.getElementById("messageBox");
+      const sessionText = document.getElementById("sessionText");
+      const logoutBtn = document.getElementById("logoutBtn");
+      const myBookings = document.getElementById("myBookings");
+      const refreshBookingsBtn = document.getElementById("refreshBookingsBtn");
+      const availableCount = document.getElementById("availableCount");
+      const bookedCount = document.getElementById("bookedCount");
 
-          if (j[i].isbooked) {
-            td.className = `${baseClasses} bg-rose-500/10 text-rose-500/60 border border-rose-500/20 cursor-not-allowed`;
-            td.innerHTML = `
-                    <span class="relative z-10">${j[i].id}</span>
-                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-2 bg-slate-900 border border-slate-700 text-sm text-slate-300 rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap shadow-2xl z-50 pointer-events-none font-normal shadow-[0_10px_25px_rgba(0,0,0,0.5)]">
-                        Booked by: <span class="font-bold text-white ml-1">${j[i].name}</span>
-                        <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-[1px] border-[6px] border-transparent border-t-slate-700"></div>
-                        <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-[2px] border-[5px] border-transparent border-t-slate-900"></div>
-                    </div>
-                `;
-          } else {
-            td.className = `${baseClasses} bg-emerald-500 text-white border-2 border-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)] cursor-pointer hover:bg-emerald-400 hover:-translate-y-1.5 hover:shadow-[0_10px_25px_rgba(16,185,129,0.5)] active:scale-95 active:shadow-[0_0_10px_rgba(16,185,129,0.3)]`;
-            td.innerHTML = `<span class="relative z-10">${j[i].id}</span>`;
-          }
+      apiBaseLabel.textContent = API_BASE_URL;
 
-          td.addEventListener("click", async function (e) {
-            const currentTd = e.currentTarget;
-            if (currentTd.classList.contains("cursor-not-allowed")) {
-              return; // Seat is already taken
-            }
+      function setMessage(message, type = "info") {
+        const styles = {
+          info: "border-white/10 bg-slate-950/30 text-slate-300",
+          success: "border-emerald-400/20 bg-emerald-500/10 text-emerald-200",
+          error: "border-rose-400/20 bg-rose-500/10 text-rose-100",
+        };
 
-            try {
-              const id = j[i].id; // Safe from loop closure
-              const name = prompt("Enter your name");
-              if (!name) return;
+        messageBox.className =
+          "mt-4 rounded-2xl border p-4 text-sm " + (styles[type] || styles.info);
+        messageBox.textContent = message;
+      }
 
-              const res = await fetch(`/${id}/${name}`, { method: "PUT" });
-              const data = await res.json();
+      async function apiRequest(path, options = {}) {
+        const headers = {
+          "Content-Type": "application/json",
+          ...(options.headers || {}),
+        };
 
-              if (data.error) {
-                alert("FAILED! Couldn't book! already booked.");
-              } else {
-                alert("Booked successfully!");
-                // Visually transition to booked state upon success
-                currentTd.className = `${baseClasses} bg-rose-500/10 text-rose-500/60 border border-rose-500/20 cursor-not-allowed`;
-                currentTd.innerHTML = `
-                            <span class="relative z-10">${id}</span>
-                            <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-2 bg-slate-900 border border-slate-700 text-sm text-slate-300 rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap shadow-2xl z-50 pointer-events-none font-normal shadow-[0_10px_25px_rgba(0,0,0,0.5)]">
-                                Booked by: <span class="font-bold text-white ml-1">${name}</span>
-                                <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-[1px] border-[6px] border-transparent border-t-slate-700"></div>
-                                <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-[2px] border-[5px] border-transparent border-t-slate-900"></div>
-                            </div>
-                        `;
-              }
-            } catch (ex) {
-              alert("error booking " + ex);
-            }
-          });
-          tr.appendChild(td);
-          tbl.appendChild(tr);
+        if (state.token) {
+          headers.Authorization = `Bearer ${state.token}`;
+        }
+
+        const response = await fetch(`${API_BASE_URL}${path}`, {
+          ...options,
+          headers,
+        });
+
+        const contentType = response.headers.get("content-type") || "";
+        const data = contentType.includes("application/json")
+          ? await response.json()
+          : null;
+
+        if (!response.ok) {
+          throw new Error(data?.message || "Request failed");
+        }
+
+        return data;
+      }
+
+      function persistSession() {
+        if (state.token && state.user) {
+          localStorage.setItem("bookMyTicketToken", state.token);
+          localStorage.setItem("bookMyTicketUser", JSON.stringify(state.user));
+        } else {
+          localStorage.removeItem("bookMyTicketToken");
+          localStorage.removeItem("bookMyTicketUser");
         }
       }
-      run();
+
+      function updateAuthMode(mode) {
+        state.mode = mode;
+        const isRegister = mode === "register";
+
+        nameInput.classList.toggle("hidden", !isRegister);
+        authSubmitBtn.textContent = isRegister ? "Create Account" : "Login";
+
+        tabLogin.className = isRegister
+          ? "rounded-2xl px-4 py-2 text-sm font-semibold text-slate-300"
+          : "rounded-2xl bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950";
+
+        tabRegister.className = isRegister
+          ? "rounded-2xl bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950"
+          : "rounded-2xl px-4 py-2 text-sm font-semibold text-slate-300";
+      }
+
+      function updateSessionUI() {
+        if (state.user) {
+          sessionText.textContent = `${state.user.name} (${state.user.email})`;
+          logoutBtn.classList.remove("hidden");
+        } else {
+          sessionText.textContent = "Not logged in";
+          logoutBtn.classList.add("hidden");
+        }
+      }
+
+      function renderMovies() {
+        movieSelect.innerHTML = "";
+
+        if (!state.movies.length) {
+          movieTitle.textContent = "No movies available";
+          movieMeta.textContent = "Backend se movie data load nahi hua.";
+          return;
+        }
+
+        state.movies.forEach((movie) => {
+          const option = document.createElement("option");
+          option.value = movie.id;
+          option.textContent = `${movie.title} (${movie.availableSeats} seats left)`;
+          if (movie.id === state.selectedMovieId) {
+            option.selected = true;
+          }
+          movieSelect.appendChild(option);
+        });
+
+        const selectedMovie =
+          state.movies.find((movie) => movie.id === state.selectedMovieId) ||
+          state.movies[0];
+
+        state.selectedMovieId = selectedMovie.id;
+        movieTitle.textContent = selectedMovie.title;
+        movieMeta.textContent = `${selectedMovie.language} • ${selectedMovie.durationMinutes} mins • ${selectedMovie.availableSeats} seats available`;
+      }
+
+      function renderSeats() {
+        seatGrid.innerHTML = "";
+
+        const bookedSeats = state.seats.filter((seat) => seat.isBooked).length;
+        availableCount.textContent = String(state.seats.length - bookedSeats);
+        bookedCount.textContent = String(bookedSeats);
+
+        if (!state.seats.length) {
+          seatGrid.innerHTML =
+            '<p class="col-span-full rounded-2xl border border-dashed border-white/10 p-6 text-center text-slate-400">Seats abhi load nahi huye.</p>';
+          return;
+        }
+
+        state.seats.forEach((seat) => {
+          const seatButton = document.createElement("button");
+          const isMine =
+            Boolean(state.user) && seat.userId && seat.userId === state.user.id;
+
+          seatButton.className =
+            "seat relative min-h-[96px] rounded-[26px] border p-4 text-left " +
+            (isMine
+              ? "mine"
+              : seat.isBooked
+                ? "booked"
+                : "available");
+
+          seatButton.innerHTML = `
+            <div class="text-xs uppercase tracking-[0.28em] text-white/65">Seat</div>
+            <div class="mt-2 text-3xl font-extrabold">${seat.seatNumber}</div>
+            <div class="mt-3 text-xs ${seat.isBooked ? "text-white/70" : "text-white/85"}">
+              ${
+                isMine
+                  ? "Booked by you"
+                  : seat.isBooked
+                    ? `Booked by ${seat.name || "user"}`
+                    : state.user
+                      ? "Tap to book"
+                      : "Login to book"
+              }
+            </div>
+          `;
+
+          if (seat.isBooked && !isMine) {
+            seatButton.disabled = true;
+            seatButton.classList.add("cursor-not-allowed");
+          }
+
+          seatButton.addEventListener("click", () => handleSeatClick(seat));
+          seatGrid.appendChild(seatButton);
+        });
+      }
+
+      function renderMyBookings() {
+        if (!state.user) {
+          myBookings.innerHTML =
+            '<p class="rounded-2xl border border-dashed border-white/10 p-4 text-sm text-slate-500">Login karke apni bookings yahan dekh sakte ho.</p>';
+          return;
+        }
+
+        if (!state.myBookings.length) {
+          myBookings.innerHTML =
+            '<p class="rounded-2xl border border-dashed border-white/10 p-4 text-sm text-slate-500">Abhi tak koi seat book nahi hui.</p>';
+          return;
+        }
+
+        myBookings.innerHTML = state.myBookings
+          .map(
+            (booking) => `
+              <div class="rounded-2xl border border-white/10 bg-slate-950/25 p-4">
+                <p class="text-sm font-semibold text-white">${booking.movieTitle}</p>
+                <p class="mt-1 text-sm text-cyan-200">Seat ${booking.seatNumber}</p>
+                <p class="mt-2 text-xs text-slate-500">${new Date(booking.createdAt).toLocaleString()}</p>
+              </div>
+            `
+          )
+          .join("");
+      }
+
+      async function loadMovies() {
+        state.movies = await apiRequest("/movies", { method: "GET" });
+        state.selectedMovieId = state.selectedMovieId || state.movies[0]?.id || "";
+        renderMovies();
+      }
+
+      async function loadSeats() {
+        if (!state.selectedMovieId) return;
+
+        state.seats = await apiRequest(`/movies/${state.selectedMovieId}/seats`, {
+          method: "GET",
+        });
+        renderSeats();
+      }
+
+      async function loadMyBookings() {
+        if (!state.user || !state.token) {
+          state.myBookings = [];
+          renderMyBookings();
+          return;
+        }
+
+        state.myBookings = await apiRequest("/bookings/me", { method: "GET" });
+        renderMyBookings();
+      }
+
+      async function refreshAll() {
+        await loadMovies();
+        await loadSeats();
+        await loadMyBookings();
+      }
+
+      async function handleSeatClick(seat) {
+        if (seat.isBooked && seat.userId === state.user?.id) {
+          setMessage(`Seat ${seat.seatNumber} already booked by you.`, "info");
+          return;
+        }
+
+        if (seat.isBooked) {
+          setMessage(`Seat ${seat.seatNumber} already booked hai.`, "error");
+          return;
+        }
+
+        if (!state.token) {
+          setMessage("Seat book karne ke liye login zaroori hai.", "error");
+          return;
+        }
+
+        try {
+          const result = await apiRequest("/bookings", {
+            method: "POST",
+            body: JSON.stringify({
+              movieId: state.selectedMovieId,
+              seatNumber: seat.seatNumber,
+            }),
+          });
+
+          setMessage(
+            `Seat ${result.booking.seatNumber} booked successfully for ${result.booking.movieTitle}.`,
+            "success"
+          );
+          await refreshAll();
+        } catch (error) {
+          setMessage(error.message, "error");
+          await loadSeats();
+          await loadMyBookings();
+        }
+      }
+
+      authForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const payload =
+          state.mode === "register"
+            ? {
+                name: nameInput.value.trim(),
+                email: emailInput.value.trim(),
+                password: passwordInput.value,
+              }
+            : {
+                email: emailInput.value.trim(),
+                password: passwordInput.value,
+              };
+
+        try {
+          const data = await apiRequest(
+            state.mode === "register" ? "/auth/register" : "/auth/login",
+            {
+              method: "POST",
+              body: JSON.stringify(payload),
+            }
+          );
+
+          state.token = data.token;
+          state.user = data.user;
+          persistSession();
+          updateSessionUI();
+          setMessage(
+            state.mode === "register"
+              ? "Account create ho gaya. Ab aap seats book kar sakte ho."
+              : "Login successful. Ab booking enabled hai.",
+            "success"
+          );
+          authForm.reset();
+          updateAuthMode("login");
+          await refreshAll();
+        } catch (error) {
+          setMessage(error.message, "error");
+        }
+      });
+
+      tabLogin.addEventListener("click", () => updateAuthMode("login"));
+      tabRegister.addEventListener("click", () => updateAuthMode("register"));
+
+      movieSelect.addEventListener("change", async (event) => {
+        state.selectedMovieId = event.target.value;
+        renderMovies();
+        await loadSeats();
+      });
+
+      logoutBtn.addEventListener("click", () => {
+        state.token = "";
+        state.user = null;
+        state.myBookings = [];
+        persistSession();
+        updateSessionUI();
+        renderMyBookings();
+        renderSeats();
+        setMessage("Logged out successfully.", "info");
+      });
+
+      refreshBookingsBtn.addEventListener("click", async () => {
+        try {
+          await loadMyBookings();
+          setMessage("Bookings refreshed.", "info");
+        } catch (error) {
+          setMessage(error.message, "error");
+        }
+      });
+
+      async function init() {
+        updateAuthMode("login");
+        updateSessionUI();
+
+        try {
+          await refreshAll();
+          setMessage(
+            state.user
+              ? "Backend connected. Aap ab seat select kar sakte ho."
+              : "Backend connected. Login karke booking start karo.",
+            "info"
+          );
+        } catch (error) {
+          setMessage(
+            `Backend connect nahi hua. Pehle backend start karo on ${API_BASE_URL}.`,
+            "error"
+          );
+          console.error(error);
+        }
+      }
+
+      init();
     </script>
   </body>
 </html>
